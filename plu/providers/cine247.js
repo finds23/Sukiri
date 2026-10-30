@@ -8,14 +8,13 @@ if (typeof globalThis.setTimeout !== "function") {
   globalThis.setTimeout = function () { return 1; };
   globalThis.clearTimeout = function () {};
 }
-var VERSION = "1.0.0";
+var VERSION = "1.0.2";
 var LABEL = "Cine 24/7";
 var PREFIX = "c24-";
 // Hora en que "empezo" el ciclo (Ciudad de Mexico, UTC-6). Al terminar la ultima pelicula vuelve a empezar la primera.
 var START = Date.UTC(2026, 9, 30, 6, 0, 0); // 2026-10-30 00:00 hora de Mexico
 // min = duracion en minutos (aqui van 100 de prueba; poner la real de cada pelicula)
 var MOVIES = [
-  {n:"Misión: Imposible - La sentencia final", tmdb:"575265", min:165, url:"http://vod-r2.lioniptv.us/PELICULAS/4K/Misi%C3%B3n-%20Imposible%20-%20La%20sentencia%20final%20(2025)%20IMAX%20REMUX%204K%20Dolby%20Visi%C3%B3n%20HDR%20Latino%20Castellano.mkv"},
   {n:"Evil Dead: En llamas", tmdb:"1212763", min:100, url:"http://vod-r2.lioniptv.us/PELICULAS/4K/E.D.E.LL%20(2026)%20Web-Dl%204K%20DV%20HDR%20Lat%20(RES).mkv"},
   {n:"Supergirl", tmdb:"1081003", min:100, url:"http://vod-r2.lioniptv.us/PELICULAS/4K/5U93RG1R1%20(2026)%20Web-Dl%204K%20DV%20HDR%2B%20Lat%20Cast.mkv"},
   {n:"Hot Spot", tmdb:"813418", min:100, url:"http://vod-r2.lioniptv.us/PELICULAS/4K/Hot%20Spot%20(2026)%20Web-Dl%204K%20DV%20HDR%2B%20Lat.mkv"},
@@ -62,10 +61,11 @@ async function getStreams(tmdbId, type, season, episode) {
   var s = schedule(Date.now());
   var cur = MOVIES[s.index], nxt = MOVIES[(s.index + 1) % MOVIES.length];
   var out = [];
-  out.push({ name: LABEL, title: "AHORA: " + cur.n + " (va en el min " + Math.floor(s.offset / 60) + ", faltan " + mmss(s.left) + ")", url: cur.url, quality: "4K", headers: {} });
-  // prueba: misma pelicula pidiendo al reproductor arrancar en el minuto actual (si el reproductor lo ignora, empieza desde cero)
-  out.push({ name: LABEL, title: "AHORA (prueba minuto " + Math.floor(s.offset / 60) + "): " + cur.n, url: cur.url + "#t=" + s.offset, quality: "4K", headers: {} });
-  out.push({ name: LABEL, title: "SIGUE: " + nxt.n, url: nxt.url, quality: "4K", headers: {} });
+  // Nuvio en la lista solo muestra "name" y "quality", asi que el dato util va ahi.
+  out.push({ name: LABEL + " · AHORA", title: "AHORA: " + cur.n + " (va en el min " + Math.floor(s.offset / 60) + ", faltan " + mmss(s.left) + ")", url: cur.url, quality: "4K · " + cur.n + " · min " + Math.floor(s.offset / 60), headers: {} });
+  // prueba: misma pelicula pidiendo al reproductor arrancar en el minuto actual (si lo ignora, empieza desde cero)
+  out.push({ name: LABEL + " · PRUEBA MIN", title: "AHORA (prueba minuto " + Math.floor(s.offset / 60) + "): " + cur.n, url: cur.url + "#t=" + s.offset, quality: "4K · " + cur.n + " · #t=" + Math.floor(s.offset / 60), headers: {} });
+  out.push({ name: LABEL + " · SIGUE", title: "SIGUE: " + nxt.n, url: nxt.url, quality: "4K · " + nxt.n, headers: {} });
   return out;
 }
 
