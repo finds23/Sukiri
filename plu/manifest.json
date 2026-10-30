@@ -1,0 +1,21 @@
+{
+  "name": "Cine 247",
+  "version": "1.0",
+  "scrapers": [
+    {
+      "id": "Cine247",
+      "name": "Cine 24/7",
+      "description": "Canal de peliculas continuo por reloj",
+      "version": "1.0",
+      "author": "-",
+      "supportedTypes": [
+        "tv"
+      ],
+      "filename": "providers/cine247.js",
+      "enabled": true,
+      "contentLanguage": [
+        "es"
+      ]
+    }
+  ]
+}
