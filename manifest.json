@@ -1,0 +1,27 @@
+{
+  "id": "org.cine247.prueba",
+  "version": "1.0.0",
+  "name": "Cine 24/7",
+  "description": "Canal de peliculas continuo (prueba)",
+  "resources": [
+    "catalog",
+    "meta",
+    "stream"
+  ],
+  "types": [
+    "tv"
+  ],
+  "idPrefixes": [
+    "kitsu:c24-"
+  ],
+  "catalogs": [
+    {
+      "type": "tv",
+      "id": "cine247-canal",
+      "name": "Cine 24/7"
+    }
+  ],
+  "behaviorHints": {
+    "configurable": false
+  }
+}
